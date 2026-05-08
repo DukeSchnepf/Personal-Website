@@ -2,7 +2,7 @@ export const profile = {
   name: 'Duke Schnepf',
   title: 'Tech Entrepreneur · Community Builder · Founder of Northwest Motor Club',
   shortTitle: 'Tech Entrepreneur & Community Builder',
-  location: 'Sequim, Washington',
+  location: 'Seattle, Washington',
   phone: '(425) 647-7993',
   email: 'Dukeschnepf@gmail.com',
   linkedin: 'https://www.linkedin.com/in/duke-schnepf-48a13b133/',

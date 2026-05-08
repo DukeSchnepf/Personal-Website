@@ -5,7 +5,7 @@ export const siteConfig = {
     'Duke Schnepf — Tech entrepreneur, founder of Northwest Motor Club, and full-stack builder uniting code, community, and craft.',
   url: 'https://dukeschnepf.com',
   email: 'Dukeschnepf@gmail.com',
-  location: 'Sequim, Washington',
+  location: 'Seattle, Washington',
   available: true,
 
   navigation: [
