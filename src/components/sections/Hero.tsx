@@ -1,8 +1,8 @@
 import { useRef, useEffect } from 'react';
-import { MagneticButton } from '@/components/common/MagneticButton';
-import { ArrowRight, Github, Linkedin, Mail } from 'lucide-react';
-import ShatteredText from '@/components/effects/ShatteredText';
+import { ArrowRight, Github, Linkedin, Mail, MapPin } from 'lucide-react';
 import gsap from 'gsap';
+import { profile } from '@/config/profile.config';
+import { siteConfig } from '@/config/site.config';
 
 interface HeroProps {
   showContent?: boolean;
@@ -17,13 +17,38 @@ const Hero = ({ showContent = true }: HeroProps) => {
 
     const ctx = gsap.context(() => {
       if (showContent) {
-        gsap.fromTo(
-          contentRef.current,
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out', delay: 0.2 }
-        );
+        const tl = gsap.timeline({ delay: 0.15 });
+        tl.fromTo(
+          '.hero-eyebrow',
+          { opacity: 0, y: 12 },
+          { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }
+        )
+          .fromTo(
+            '.hero-title',
+            { opacity: 0, y: 24 },
+            { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' },
+            '-=0.3'
+          )
+          .fromTo(
+            '.hero-tagline',
+            { opacity: 0, y: 16 },
+            { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' },
+            '-=0.5'
+          )
+          .fromTo(
+            '.hero-cta',
+            { opacity: 0, y: 16 },
+            { opacity: 1, y: 0, duration: 0.6, stagger: 0.08, ease: 'power3.out' },
+            '-=0.4'
+          )
+          .fromTo(
+            '.hero-meta',
+            { opacity: 0, y: 12 },
+            { opacity: 1, y: 0, duration: 0.6, stagger: 0.08, ease: 'power3.out' },
+            '-=0.3'
+          );
       } else {
-        gsap.to(contentRef.current, { opacity: 0, y: 20, duration: 0.3 });
+        gsap.to(contentRef.current, { opacity: 0, y: 16, duration: 0.3 });
       }
     }, contentRef);
 
@@ -32,122 +57,130 @@ const Hero = ({ showContent = true }: HeroProps) => {
 
   useEffect(() => {
     if (!scrollIndicatorRef.current || !showContent) return;
-
     const ctx = gsap.context(() => {
       gsap.fromTo(
         scrollIndicatorRef.current,
         { opacity: 0 },
-        { opacity: 1, duration: 1, delay: 1 }
+        { opacity: 1, duration: 1, delay: 1.6 }
       );
     }, scrollIndicatorRef);
-
     return () => ctx.revert();
   }, [showContent]);
 
   return (
-    <section id="home" className="relative h-screen w-full overflow-hidden pointer-events-none">
-      <div className="absolute inset-0 z-0">
-        {/* Starfield is now global in App.tsx */}
-      </div>
+    <section
+      id="home"
+      className="relative min-h-[100svh] w-full overflow-hidden flex items-center"
+    >
+      {/* Aurora background blobs */}
+      <div
+        className="aurora-blob bg-aurora-violet/20 -top-40 -left-20 w-[480px] h-[480px]"
+        aria-hidden
+      />
+      <div
+        className="aurora-blob bg-aurora-cyan/15 top-1/3 -right-20 w-[420px] h-[420px]"
+        aria-hidden
+      />
 
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 text-center pointer-events-none">
-        <div
-          ref={contentRef}
-          style={{ opacity: 0 }}
-          className="max-w-4xl pointer-events-auto"
-        >
-          <div className="mb-4">
-            <ShatteredText
-              text="Duke Schnepf"
-              trigger={showContent}
-              className="font-display text-3xl font-bold leading-tight tracking-tight text-white md:text-5xl lg:text-7xl"
-            />
+      {/* Subtle grid */}
+      <div className="absolute inset-0 bg-grid bg-grid-fade pointer-events-none" aria-hidden />
+
+      <div className="relative z-10 w-full container-wide px-4 sm:px-6 lg:px-8 pt-24 pb-20">
+        <div ref={contentRef} className="max-w-4xl">
+          {/* Eyebrow / status */}
+          <div className="hero-eyebrow inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-1.5 text-xs sm:text-sm text-text-secondary backdrop-blur-md mb-6">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-aurora-mint/70 opacity-70" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-aurora-mint" />
+            </span>
+            <span className="font-mono tracking-wide">
+              Available for new ventures &amp; collabs
+            </span>
           </div>
 
-          <p className="mx-auto mb-6 max-w-3xl text-lg text-text-secondary md:text-3xl font-light tracking-wide">
-            Fullstack Solutions Architect
+          {/* Title */}
+          <h1 className="hero-title font-display font-bold text-display-1 text-white">
+            <span className="block">Duke</span>
+            <span className="block text-aurora">Schnepf.</span>
+          </h1>
+
+          {/* Subtitle */}
+          <p className="hero-tagline mt-6 max-w-2xl text-lg sm:text-xl md:text-2xl text-text-secondary leading-relaxed">
+            {profile.tagline}{' '}
+            <span className="text-text-primary">
+              Founder, operator, and full-stack builder shipping ideas that bring people together.
+            </span>
           </p>
 
-          <h2 className="mb-4 font-display text-xl font-bold text-white md:text-4xl">
-            Managing Complexity with <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-neon-purple">Simplicity</span>
-          </h2>
+          {/* CTAs */}
+          <div className="mt-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+            <a
+              href="#projects"
+              className="hero-cta group relative inline-flex items-center justify-center gap-2 rounded-full bg-aurora px-7 py-4 font-medium text-space-void shadow-glow-violet transition-transform duration-300 hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <span>See what I’m building</span>
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </a>
 
-          <p className="mx-auto mb-8 max-w-2xl text-sm text-text-secondary md:text-lg leading-relaxed italic">
-            Blending both for infinite possibilities.
-          </p>
-
-          <div className="flex flex-col items-center justify-center gap-4 sm:gap-6 sm:flex-row">
-            {/* Discover More - Nebula Flow Style */}
-            <MagneticButton>
-              <a
-                href="#projects"
-                className="group relative flex items-center gap-3 overflow-hidden rounded-full px-8 py-4 transition-all hover:scale-105"
-              >
-                {/* Animated Gradient Background */}
-                <div className="absolute inset-0 bg-gradient-to-r from-neon-blue via-neon-purple to-neon-cyan animate-nebula-flow opacity-90 transition-opacity group-hover:opacity-100" />
-
-                {/* Starburst Glow Effect on Hover */}
-                <div className="absolute inset-0 bg-white/20 blur-xl opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-
-                {/* Content */}
-                <span className="relative z-10 font-bold text-white text-lg tracking-wide">Discover More</span>
-                <ArrowRight className="relative z-10 h-5 w-5 text-white transition-transform duration-300 group-hover:translate-x-1 group-hover:rotate-[-45deg]" />
-              </a>
-            </MagneticButton>
-
-            {/* Get Connected - Orbital Ring Style */}
-            <MagneticButton>
-              <a
-                href="#contact"
-                className="group relative flex items-center gap-3 overflow-hidden rounded-full bg-space-void/40 px-8 py-4 backdrop-blur-md transition-all hover:bg-space-void/60"
-              >
-                {/* Orbital Ring Container */}
-                <div className="absolute inset-0 rounded-full p-[2px]">
-                  <div className="absolute inset-0 rounded-full border border-white/20" />
-                  {/* Rotating Comet */}
-                  <div className="absolute inset-0 animate-orbital-spin">
-                    <div className="h-full w-full rounded-full border-t-2 border-neon-purple shadow-[0_0_15px_rgba(192,132,252,0.8)]" />
-                  </div>
-                </div>
-
-                {/* Inner Glow */}
-                <div className="absolute inset-0 rounded-full bg-neon-purple/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                {/* Content */}
-                <span className="relative z-10 font-medium text-white group-hover:text-neon-purple transition-colors duration-300">Get Connected</span>
-                <Mail className="relative z-10 h-5 w-5 text-white transition-all duration-300 group-hover:text-neon-purple group-hover:scale-110" />
-              </a>
-            </MagneticButton>
+            <a
+              href="#contact"
+              className="hero-cta group inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-7 py-4 font-medium text-white backdrop-blur-md transition-all duration-300 hover:border-aurora-violet/50 hover:bg-white/[0.06]"
+            >
+              <Mail className="h-4 w-4 text-aurora-violet" />
+              <span>Get in touch</span>
+            </a>
           </div>
 
-          <div className="mt-12 flex items-center justify-center gap-6">
-            <MagneticButton>
-              <a href="https://github.com/DukeSchnepf" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-white transition-colors">
-                <Github className="h-6 w-6" />
+          {/* Meta row: location + socials */}
+          <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4">
+            <div className="hero-meta flex items-center gap-2 text-text-secondary text-sm">
+              <MapPin className="h-4 w-4 text-aurora-cyan" />
+              <span>{profile.location}</span>
+            </div>
+
+            <div className="hero-meta flex items-center gap-4">
+              <a
+                href={siteConfig.social.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub"
+                className="text-text-secondary hover:text-white transition-colors"
+              >
+                <Github className="h-5 w-5" />
               </a>
-            </MagneticButton>
-            <MagneticButton>
-              <a href="https://linkedin.com/in/DukeSchnepf" target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-white transition-colors">
-                <Linkedin className="h-6 w-6" />
+              <a
+                href={siteConfig.social.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                className="text-text-secondary hover:text-white transition-colors"
+              >
+                <Linkedin className="h-5 w-5" />
               </a>
-            </MagneticButton>
-            <MagneticButton>
-              <a href="mailto:duke@example.com" className="text-text-secondary hover:text-white transition-colors">
-                <Mail className="h-6 w-6" />
+              <a
+                href={`mailto:${profile.email}`}
+                aria-label="Email"
+                className="text-text-secondary hover:text-white transition-colors"
+              >
+                <Mail className="h-5 w-5" />
               </a>
-            </MagneticButton>
+            </div>
           </div>
         </div>
       </div>
 
+      {/* Scroll indicator */}
       {showContent && (
         <div
           ref={scrollIndicatorRef}
           style={{ opacity: 0 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce text-white/50"
+          className="hidden md:block absolute bottom-10 left-1/2 -translate-x-1/2 text-white/40"
         >
-          <div className="h-10 w-6 rounded-full border-2 border-white/30 flex justify-center p-1">
-            <div className="h-2 w-1 bg-white/50 rounded-full animate-scroll" />
+          <div className="flex flex-col items-center gap-2">
+            <span className="text-[10px] uppercase tracking-[0.3em] font-mono">Scroll</span>
+            <div className="h-10 w-6 rounded-full border-2 border-white/20 flex justify-center p-1">
+              <div className="h-2 w-1 bg-white/60 rounded-full animate-scroll" />
+            </div>
           </div>
         </div>
       )}
