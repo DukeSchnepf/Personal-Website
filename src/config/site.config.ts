@@ -1,30 +1,28 @@
 export const siteConfig = {
   name: 'Duke Schnepf',
-  title: 'Entrepreneurial Tech Professional & Community Builder',
-  description: 'Professional profile, experience, and projects',
-  url: 'https://yourwebsite.com',
+  title: 'Tech Entrepreneur & Community Builder',
+  description:
+    'Duke Schnepf — Tech entrepreneur, founder of Northwest Motor Club, and full-stack builder uniting code, community, and craft.',
+  url: 'https://dukeschnepf.com',
   email: 'Dukeschnepf@gmail.com',
-  location: 'Sequim/Fall City, Washington',
+  location: 'Sequim, Washington',
   available: true,
 
   navigation: [
-    { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
-    { name: 'Experience', href: '#experience' },
     { name: 'Skills', href: '#skills' },
+    { name: 'Experience', href: '#experience' },
     { name: 'Projects', href: '#projects' },
     { name: 'Contact', href: '#contact' },
   ],
 
   social: {
-    github: 'https://github.com/yourusername',
+    github: 'https://github.com/DukeSchnepf',
     linkedin: 'https://www.linkedin.com/in/duke-schnepf-48a13b133/',
-    twitter: 'https://twitter.com/yourusername',
     email: 'mailto:Dukeschnepf@gmail.com',
   },
 
-  resume: '/resume',
+  resume: '/resume.pdf',
 }
 
 export type SiteConfig = typeof siteConfig
-
